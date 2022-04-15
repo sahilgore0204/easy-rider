@@ -11,6 +11,7 @@ export default function App() {
   let [loadApiAgain, setLoadApiAgain] = useState(false);
   let [initialData,setInitialData]=useState([]);
   let [filterVisible,setVisiblity]=useState(false);
+  let [locationData,setLocationData]=useState({loaded:false});
   useEffect(() => {
     console.log("triggered");
     fetch("https://assessment.api.vweb.app/user")
@@ -115,6 +116,22 @@ export default function App() {
     }
   }
 
+  function fetchLocationData(){
+    console.log("fetcing location");
+    let tempData={};
+    rideInfo.forEach((ride)=>{
+      if(!tempData[ride.state])
+      tempData[ride.state]=[];
+      tempData[ride.state].push(ride.city);
+    })
+    console.log(rideInfo);
+    console.log(tempData)
+    setLocationData({...tempData,loaded:true});
+  }
+
+  useEffect(()=>{
+    fetchLocationData();
+  },[rideInfo])
 
   return (
     <div className="App">
@@ -127,7 +144,7 @@ export default function App() {
             return <RideInfo key={ind} allInfo={ride} />;
           })}
       </div>
-      <FilterBox visible={filterVisible} visibility={setVisiblity} />
+      <FilterBox data={locationData} visible={filterVisible} visibility={setVisiblity} />
     </div>
   );
 }
