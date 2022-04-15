@@ -93,7 +93,7 @@ export default function RideInfo(props) {
       />
       <TextContent
         position="absolute"
-        left="1098px"
+        left="798px"
         top="23px"
         fontFamily="SF Pro Display,sans-serif"
         fontStyle="normal"
@@ -109,7 +109,7 @@ export default function RideInfo(props) {
       />
       <TextContent
         position="absolute"
-        left="1178px"
+        left="950px"
         top="23px"
         fontFamily="SF Pro Display,sans-serif"
         fontStyle="normal"

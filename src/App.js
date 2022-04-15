@@ -12,6 +12,12 @@ export default function App() {
   let [initialData,setInitialData]=useState([]);
   let [filterVisible,setVisiblity]=useState(false);
   let [locationData,setLocationData]=useState({loaded:false});
+  let [filterValue,setfilterValue]=useState({
+    state:"",
+    city:""
+})
+
+  let [countOfRides,setCountOfRides]=useState([0,0]);
   useEffect(() => {
     console.log("triggered");
     fetch("https://assessment.api.vweb.app/user")
@@ -75,6 +81,7 @@ export default function App() {
         }
   }
   function fetchNear(){
+    setfilterValue({state:"",city:""});
     fetch("https://assessment.api.vweb.app/rides")
       .then((response) => response.json())
       .then((data) => {
@@ -83,6 +90,15 @@ export default function App() {
         sortByDistance(data,userStationCode);
         setRideInfo(data);
         setInitialData(data);
+        let c1=0,c2=0;
+        data.forEach((ride)=>{
+          let date=new Date(ride.date);
+          let x=date.getTime()-Date.now();
+          if(x>=0)
+          c1++;
+          else c2++;
+        });
+        setCountOfRides([c1,c2]);
         setLoaded(true);
       })
   }
@@ -122,6 +138,7 @@ export default function App() {
     rideInfo.forEach((ride)=>{
       if(!tempData[ride.state])
       tempData[ride.state]=[];
+      if(!tempData[ride.state].includes(ride.city))
       tempData[ride.state].push(ride.city);
     })
     console.log(rideInfo);
@@ -136,15 +153,18 @@ export default function App() {
   return (
     <div className="App">
       {userInfo.loaded && <Navbar user={userInfo} />}
-      <Ridebar visible={filterVisible} visibility={setVisiblity} fetchData={fetchRideData} />
+      <Ridebar count={countOfRides} visible={filterVisible} visibility={setVisiblity} fetchData={fetchRideData} />
       <div className="ride-list">
         {loaded &&
           userInfo.loaded &&
           rideInfo.map((ride, ind) => {
+            let {city,state}=filterValue;
+            if((city==="" || city==="Select City" || city===ride.city) && (state==="" || state==="Select State" || state===ride.state))
             return <RideInfo key={ind} allInfo={ride} />;
+            return "";
           })}
       </div>
-      <FilterBox data={locationData} visible={filterVisible} visibility={setVisiblity} />
+      <FilterBox filterValue={filterValue} setFilterValue={setfilterValue} data={locationData} visible={filterVisible} visibility={setVisiblity} />
     </div>
   );
 }

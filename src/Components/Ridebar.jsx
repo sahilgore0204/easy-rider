@@ -36,6 +36,7 @@ export default function RideBar(props) {
         class="clickable upcoming"
         changeColor={setColors}
         fetchData={props.fetchData}
+        smallContent={` (${props.count[0]})`}
       />
       <TextContent
         position="absolute"
@@ -52,6 +53,7 @@ export default function RideBar(props) {
         class="clickable past"
         changeColor={setColors}
         fetchData={props.fetchData}
+        smallContent={` (${props.count[1]})`}
       />
       <ImgContent
         position="absolute"

@@ -3,20 +3,15 @@ import TextContent from "./TextContent";
 import InputSelect from "./InputSelect";
 export default function FilterBox(props){
     let listOfStates=[],listOfCities=[];
-    let [filterValue,setfilterValue]=useState({
-      state:"",
-      city:""
-  })
     for(let state in props.data){
+      if(state==="loaded")
+      continue;
       listOfStates.push(state);
       for(let city in props.data[state]){
         let cityName=props.data[state][city];
         if(!listOfCities.includes(cityName))
         listOfCities.push(cityName);
       }
-    }
-    function changeCityData(stateName){
-      console.log("changing cities");
     }
     return <div style={props.visible?{display:"block"}:{display:"none"}} className="filter-box">
     <TextContent
@@ -40,8 +35,8 @@ export default function FilterBox(props){
         top="59px"
         backgroundColor="white"
       />
-      <InputSelect filter={filterValue.state} changeFilter={setfilterValue} changeCityData={changeCityData} data={listOfStates} name="state" position="absolute" left="30px" top="79px" color="white" content="Select State" />
-      <InputSelect filter={filterValue.city} changeFilter={setfilterValue} changeCityData={changeCityData} data={(filterValue.state!="" && filterValue.state!="Select State")?props.data[filterValue.state]:listOfCities} name="city" position="absolute" left="30px" top="129px" color="white" content="Select City" />
+      <InputSelect locationData={props.data} Ref={props.filterValue} filter={props.filterValue.state} changeFilter={props.setFilterValue} data={listOfStates} name="state" position="absolute" left="30px" top="79px" color="white" content="Select State" />
+      <InputSelect locationData={props.data} Ref={props.filterValue} filter={props.filterValue.city} changeFilter={props.setFilterValue}  data={(props.filterValue.state!="" && props.filterValue.state!="Select State")?props.data[props.filterValue.state]:listOfCities} name="city" position="absolute" left="30px" top="129px" color="white" content="Select City" />
     </div>
 }
 
