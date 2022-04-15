@@ -1,0 +1,42 @@
+html,
+body {
+  margin: 0;
+  width: 100%;
+  background: #555555;
+}
+
+.ride-list {
+  margin-top: 165px;
+  width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+span {
+  color: #ffffff;
+}
+
+.clickable{
+  cursor: pointer;
+}
+
+.filter-box{
+  position: absolute;
+  width: 228px;
+  height: 190px;
+  background: #131313;
+  border-radius: 15px;
+  right: 10px;
+  z-index: 1;
+  top: 150px;
+  border: 1px solid white;
+}
+
+select{
+  position: absolute;
+  width: 168.45px;
+  height: 37.5px;
+  
+  background: #232323;
+  border-radius: 4.68775px;
+}
