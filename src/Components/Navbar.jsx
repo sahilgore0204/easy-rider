@@ -1,7 +1,9 @@
+//this component deals with navigation bar
+
 import React, { useState, useEffect } from "react";
-import TextContent from "./TextContent";
-import ImgContent from "./ImgContent";
-let styleObj = {
+import TextContent from "./TextContent";// this component is used to render each text field
+import ImgContent from "./ImgContent";// this component is used to render every image field
+let styleObj = { //inline styles
   position: "absolute",
   width: "100%",
   height: "84px",

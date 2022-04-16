@@ -1,8 +1,12 @@
+//used to render filter box, visibility is toggled on user clicks
+
 import React,{useState} from "react";
 import TextContent from "./TextContent";
-import InputSelect from "./InputSelect";
+import InputSelect from "./InputSelect"; // renders the <select> field for state and city.
 export default function FilterBox(props){
-    let listOfStates=[],listOfCities=[];
+    let listOfStates=[],listOfCities=[]; //passed as props to the <select> tag for rendering
+
+    //construction of above declared lists
     for(let state in props.data){
       if(state==="loaded")
       continue;
@@ -40,3 +44,4 @@ export default function FilterBox(props){
     </div>
 }
 
+// if state is selected, only cities of that state are displayed, this is achieved from conditional rendering and filter hooks that I declared in App.js

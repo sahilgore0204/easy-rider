@@ -1,3 +1,5 @@
+//this component deals with ride information including, including all the things
+
 import React from "react";
 import ImgContent from "./ImgContent";
 import TextContent from "./TextContent";

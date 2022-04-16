@@ -1,24 +1,30 @@
+// deployment link https://easy-rider.vercel.app/
+// resume link https://drive.google.com/file/d/1tOADDXPQQADbLyAG6VG6awRolA-GsA9v/view?usp=sharing
+
 import React, { useState, useEffect } from "react";
-import Navbar from "./Components/Navbar";
-import Ridebar from "./Components/Ridebar";
-import RideInfo from "./Components/RideInfo";
-import FilterBox from "./Components/FilterBox";
+import Navbar from "./Components/Navbar";//this component is for companay name, username and its profile picture
+import Ridebar from "./Components/Ridebar";// this component displays information of different states of rides like nearest one,upcoming and past
+                                            // also comprises of the filter box
+import RideInfo from "./Components/RideInfo"; //this component display all the ride details
+import FilterBox from "./Components/FilterBox";// this component is for taking user input for state and city filter
 export default function App() {
-  let [rideInfo, setRideInfo] = useState([]);
-  let [loaded, setLoaded] = useState(false);
+  let [rideInfo, setRideInfo] = useState([]); //state for data fetched form ride api
+  let [loaded, setLoaded] = useState(false);// when ride api data fetching is successful it is set to true
   //console.log("hello");
-  let [userInfo, setUserInfo] = useState({ loaded: false });
-  let [loadApiAgain, setLoadApiAgain] = useState(false);
-  let [initialData,setInitialData]=useState([]);
-  let [filterVisible,setVisiblity]=useState(false);
-  let [locationData,setLocationData]=useState({loaded:false});
-  let [filterValue,setfilterValue]=useState({
+  let [userInfo, setUserInfo] = useState({ loaded: false }); //state for data fetched from user api
+  let [loadApiAgain, setLoadApiAgain] = useState(false);// sometimes userapi fails to fetch due to cors policy, so when it happens this state is changed to make user api call again
+  let [initialData,setInitialData]=useState([]);// rideInfo data changes upon user selection, this state us used for storing the initial version that was feched from api itself
+  let [filterVisible,setVisiblity]=useState(false);//this state toggles the visibility of filter box based on iser click event
+  let [locationData,setLocationData]=useState({loaded:false});// state for storing the data about cities and states from the rideInfo data that we fetched
+  let [filterValue,setfilterValue]=useState({  // state for filters chosen by users, required for conditionally rendereing rideInfo data as well as for constructing filter UI
     state:"",
     city:""
 })
 
   //let [countOfRides,setCountOfRides]=useState([0,0,0]);
 
+
+  //below useEffect is for fetching user information with dependency as loadApiAgain which ensures that data fetching never fails
   useEffect(() => {
     console.log("triggered");
     fetch("https://assessment.api.vweb.app/user")
@@ -34,6 +40,7 @@ export default function App() {
   }, [loadApiAgain]);
 
   //console.log(loadRidesAgain);
+  //below function sorts our rideInfo wrt nearest ride from user.
   function sortByDistance(data,userStationCode){
     data.sort((ride1, ride2) => {
       let arr1 = ride1.station_path,
@@ -55,6 +62,7 @@ export default function App() {
     });
   }
 
+  //elow function sorts the ride data wrt to date, based on opr it sorts it into either upcoming rides or past rides
   function sortByDate(data,opr){
         console.log(data);
         let userStationCode = Number(userInfo.station_code);
@@ -81,6 +89,9 @@ export default function App() {
           setRideInfo(newData)
         }
   }
+
+  //below function is used to fetch new ride data, triggeres every time user click on nearest rides
+  // I assumed that everytime user clicks on nearest rides, he needs to know the closest rides from him and every time api returns different data, thats why this type of UI is implemented
   function fetchNear(){
     setfilterValue({state:"",city:""});
     //setCountOfRides([0,0,0]);
@@ -96,20 +107,22 @@ export default function App() {
       })
   }
 
-
+  //trigggered when user clicks on upcoming rides
   function fetchUpcoming(){
     sortByDate(initialData,1);
   }
 
+  // triggered when user clicks on past rides
   function fetchPast(){
     sortByDate(initialData,2);
   }
 
-
+  // used to fetch ride data intially
   useEffect(() => {
       fetchNear();
   }, [userInfo]);
 
+  //this is for clicking of ride types
   function fetchRideData(type){
     if(type==="near"){
       fetchNear();
@@ -128,7 +141,7 @@ export default function App() {
   }
 
 
-
+  //to fetch the states and cities everytime new ride data arrives.
   function fetchLocationData(){
     console.log("fetcing location");
     let tempData={};
@@ -143,6 +156,7 @@ export default function App() {
     setLocationData({...tempData,loaded:true});
   }
 
+  // to fetch location data every evertime rideInfo changes
   useEffect(()=>{
     fetchLocationData();
   },[rideInfo])
@@ -156,6 +170,7 @@ export default function App() {
           userInfo.loaded &&
           rideInfo.map((ride, ind) => {
             let {city,state}=filterValue;
+            //conditional rendering based on city and state chosen
             if((city==="" || city==="Select City" || city===ride.city) && (state==="" || state==="Select State" || state===ride.state)){
             return <RideInfo key={ind} allInfo={ride} />;
             }

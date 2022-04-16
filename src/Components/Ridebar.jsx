@@ -1,8 +1,10 @@
+//this component deals with ride navigation bar
+
 import React,{useState} from "react";
 import TextContent from "./TextContent";
 import ImgContent from "./ImgContent";
 export default function RideBar(props) {
-  let [colors,setColors]=useState(["#ffffff","#d0cbcb","#d0cbcb"]);
+  let [colors,setColors]=useState(["#ffffff","#d0cbcb","#d0cbcb"]); // this state is used to change color based on user clicks
   return (
     <div>
       <TextContent

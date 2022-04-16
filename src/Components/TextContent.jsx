@@ -1,10 +1,12 @@
+//every text field is rendered through this component, props are used for customization
+
 import React from "react";
 
 export default function TextContent(props) {
   let styleObj = { ...props };
   //console.log(styleObj);
   let grey="#d0cbcb",white="#ffffff";
-
+  // below function is used for handling clicks on certail text fields 
   function handleClick(event){
     if(event.target.className.includes("clickable")){
       let classArray=event.target.className.split(' ');
